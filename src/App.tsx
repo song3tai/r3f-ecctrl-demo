@@ -2,14 +2,17 @@ import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { KeyboardControls, OrbitControls } from "@react-three/drei";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import CharacterModel from "./components/CharacterModel";
 import { InfiniteGround } from "./components/InfiniteGround";
 import { CHARACTER_MODEL_URL } from "./Constants.ts";
+import { EnemySystem } from "./components/EnemySystem";
+import { BulletSystem } from "./components/BulletSystem";
 
 function App() {
   const characterRef = useRef(null);
+  const [bulletHitPosition, setBulletHitPosition] = useState<THREE.Vector3 | null>(null);
 
   /**
    * Character animation set preset
@@ -44,9 +47,20 @@ function App() {
     { name: "action4", keys: ["KeyF"] },
   ];
 
+  const handleBulletHit = (position: THREE.Vector3) => {
+    setBulletHitPosition(position.clone());
+    // 在下一帧重置，以便能够检测新的碰撞
+    setTimeout(() => setBulletHitPosition(null), 0);
+  };
+
   return (
     <>
-      <Canvas shadows camera={{ position: [0, 10, 10], fov: 50 }}>
+      <Canvas shadows camera={{ position: [0, 10, 10], fov: 50 }}       
+      onPointerDown={(e) => {
+        if (e.pointerType === 'mouse') {
+          (e.target as HTMLCanvasElement).requestPointerLock()
+        }
+      }}>
         <directionalLight
           intensity={2.5}
           color={"#FFFFFF"}
@@ -82,6 +96,14 @@ function App() {
             </KeyboardControls>
             
             <InfiniteGround characterRef={characterRef} />
+            <BulletSystem 
+              characterRef={characterRef}
+              onBulletHit={handleBulletHit}
+            />
+            <EnemySystem 
+              characterRef={characterRef}
+              bulletHitPosition={bulletHitPosition}
+            />
           </Physics>
         </Suspense>
         
