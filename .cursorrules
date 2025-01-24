@@ -1,0 +1,70 @@
+{
+  "typescript": {
+    "formatter": "prettier",
+    "formatOnSave": true,
+    "organizeImportsOnSave": true,
+    "importOrder": [
+      "^react",
+      "^@react-three/fiber",
+      "^@react-three/drei",
+      "^three",
+      "^@/components/(.*)$",
+      "^@/hooks/(.*)$",
+      "^@/models/(.*)$",
+      "^@/scenes/(.*)$",
+      "^@/utils/(.*)$",
+      "^[./]"
+    ]
+  },
+  "javascript": {
+    "formatter": "prettier",
+    "formatOnSave": true,
+    "organizeImportsOnSave": true
+  },
+  "typescriptreact": {
+    "formatter": "prettier",
+    "formatOnSave": true,
+    "organizeImportsOnSave": true,
+    "importOrder": [
+      "^react",
+      "^@react-three/fiber",
+      "^@react-three/drei",
+      "^three",
+      "^@/components/(.*)$",
+      "^@/hooks/(.*)$",
+      "^@/models/(.*)$",
+      "^@/scenes/(.*)$",
+      "^@/utils/(.*)$",
+      "^[./]"
+    ]
+  },
+  "javascriptreact": {
+    "formatter": "prettier",
+    "formatOnSave": true,
+    "organizeImportsOnSave": true
+  },
+  "json": {
+    "formatter": "prettier",
+    "formatOnSave": true
+  },
+  "markdown": {
+    "formatter": "prettier",
+    "formatOnSave": true
+  },
+  "css": {
+    "formatter": "prettier",
+    "formatOnSave": true
+  },
+  "scss": {
+    "formatter": "prettier",
+    "formatOnSave": true
+  },
+  "glsl": {
+    "formatter": "prettier",
+    "formatOnSave": true
+  },
+  "threejs": {
+    "formatter": "prettier",
+    "formatOnSave": true
+  }
+} 

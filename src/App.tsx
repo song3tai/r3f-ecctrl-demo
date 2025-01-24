@@ -1,14 +1,16 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
-import { Physics, RigidBody } from "@react-three/rapier";
-import { KeyboardControls } from "@react-three/drei";
-import { Suspense } from "react";
+import { Physics } from "@react-three/rapier";
+import { KeyboardControls, OrbitControls } from "@react-three/drei";
+import { Suspense, useRef } from "react";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import CharacterModel from "./components/CharacterModel";
-import SceneModel from "./components/Scene";
+import { InfiniteGround } from "./components/InfiniteGround";
 import { CHARACTER_MODEL_URL } from "./Constants.ts";
 
 function App() {
+  const characterRef = useRef(null);
+
   /**
    * Character animation set preset
    */
@@ -44,7 +46,7 @@ function App() {
 
   return (
     <>
-      <Canvas shadows>
+      <Canvas shadows camera={{ position: [0, 10, 10], fov: 50 }}>
         <directionalLight
           intensity={2.5}
           color={"#FFFFFF"}
@@ -63,7 +65,13 @@ function App() {
         <Suspense fallback={null}>
           <Physics timeStep="vary">
             <KeyboardControls map={keyboardMap}>
-              <Ecctrl debug animated position={[0, 5, 0]}>
+              <Ecctrl
+                ref={characterRef}
+                debug
+                animated
+                position={[0, 5, 0]}
+                camFollowMult={100}
+                >
                 <EcctrlAnimation
                   characterURL={CHARACTER_MODEL_URL}
                   animationSet={animationSet}
@@ -72,11 +80,12 @@ function App() {
                 </EcctrlAnimation>
               </Ecctrl>
             </KeyboardControls>
-            <RigidBody type="fixed" colliders="trimesh" ccd>
-              <SceneModel />
-            </RigidBody>
+            
+            <InfiniteGround characterRef={characterRef} />
           </Physics>
         </Suspense>
+        
+        <OrbitControls makeDefault />
       </Canvas>
     </>
   );
